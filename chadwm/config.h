@@ -1,16 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
-#define XF86MonBrightnessDown 0x1008ff03
-#define XF86MonBrightnessUp 0x1008ff02
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int default_border = 0;  // to switch back to default border after dynamic border resizing via keybinds
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 5;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -127,9 +126,11 @@ static const Layout layouts[] = {
 /* commands */
 static const char *term[]  = {  "st", NULL }; // change this to your term
 static const char *rofi[] = {"rofi", "-show", "drun", NULL };
-static const char *xi[] = {"xbacklight", "-inc", "7", NULL};
-static const char *xd[] = {"xbacklight", "-dec", "7", NULL};
-
+static const char *xi[] = {"xbacklight", "-inc", "10", NULL};
+static const char *xd[] = {"xbacklight", "-dec", "10", NULL};
+static const char *rv[] = {"pamixer", "-i", "5", NULL};
+static const char *dv[] = {"pamixer", "-d", "5", NULL};
+static const char *tv[] = {"pamixer", "-t", NULL};
 static Key keys[] = {
     /* modifier                     key        function        argument */
     { MODKEY,                       XK_c,      spawn,          {.v = rofi } },
@@ -139,9 +140,12 @@ static Key keys[] = {
     {MODKEY | ControlMask, XK_u, spawn, SHCMD("maim | xclip -selection clipboard -t image/png")},
     {MODKEY, XK_u, spawn,   SHCMD("maim --select | xclip -selection clipboard -t image/png")},
     {MODKEY,			    XK_r,	spawn,		SHCMD("st -e ranger") },
-    {0, XF86MonBrightnessDown, spawn, {.v = xd}},
-    {0, XF86MonBrightnessUp, spawn, {.v = xi}},
-    { MODKEY,                       XK_space,   spawn,           SHCMD("rofi -show run") },
+    {0,                             XF86XK_MonBrightnessDown,    spawn, {.v = xd}},
+    {0,                             XF86XK_MonBrightnessUp,     spawn, {.v = xi}},
+    {0,                             XF86XK_AudioRaiseVolume,    spawn, {.v = rv}},
+    {0,                             XF86XK_AudioLowerVolume,    spawn, {.v = dv}},
+    {0,                             XF86XK_AudioMute,    spawn, {.v = tv}},
+    { MODKEY,                       XK_space,   spawn,          SHCMD("rofi -show run") },
     { MODKEY,                       XK_t,      togglebar,      {0} },
     { MODKEY|ControlMask,                       XK_w,      tabmode,        { -1 } },
     { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
