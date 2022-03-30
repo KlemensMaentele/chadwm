@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 
 # ^c$var^ = fg color
 # ^b$var^ = bg color
@@ -31,14 +31,14 @@ battery() {
 	get_capacity="$(cat /sys/class/power_supply/BAT0/capacity)"
 	get_status="$(cat /sys/class/power_supply/BAT0/status)"
 	if [ $get_status == 'Discharging' ]; then
-		printf "^c$blue^  $get_capacity"
+		printf "^c$white^^b$black^  $get_capacity"
 	else
-		printf "^c$blue^  $get_capacity"
+		printf "^c$white^^b$black^  $get_capacity"
 	fi
 }
 
 brightness() {
-	printf "^c$red^  "
+	printf "^c$red^^b$black^  "
 	printf "^c$red^%.0f\n" $(cat /sys/class/backlight/acpi_video0/brightness)
 }
 
@@ -61,8 +61,11 @@ clock() {
 
 volume() {
         volume=$(pamixer --get-volume)
-        printf "^c$black^^b$darkblue^  "
-        printf "^c$black^^b$blue^ $volume"
+        printf "^c$green^^b$black^  "
+        case "$(pamixer --get-mute)" in
+        true) printf "^c$green^^b$black^m" ;;
+        false) printf "^c$green^^b$black^ $volume" ;; 
+        esac
 }
 
 while true; do
@@ -70,5 +73,5 @@ while true; do
 	[ $interval = 0 ] || [ $(($interval % 3600)) = 0 ] && updates=$(pkg_updates)
 	interval=$((interval + 1))
 
-	sleep 1 && xsetroot -name "$(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
+        sleep 1 && xsetroot -name "$(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
 done
