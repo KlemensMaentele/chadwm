@@ -16,7 +16,7 @@ cpu() {
 }
 
 pkg_updates() {
-	updates=$(doas xbps-install -un | wc -l) # void
+	# updates=$(doas xbps-install -un | wc -l) # void
 	# updates=$(checkupdates | wc -l)   # arch , needs pacman contrib
 	# updates=$(aptitude search '~U' | wc -l)  # apt (ubuntu,debian etc)
 
@@ -38,7 +38,7 @@ battery() {
 }
 
 brightness() {
-	printf "^c$red^^b$black^  "
+	printf "^c$red^^b$black^  "
 	printf "^c$red^%.0f\n" $(cat /sys/class/backlight/acpi_video0/brightness)
 }
 
@@ -61,10 +61,9 @@ clock() {
 
 volume() {
         volume=$(pamixer --get-volume)
-        printf "^c$green^^b$black^  "
         case "$(pamixer --get-mute)" in
-        true) printf "^c$green^^b$black^m" ;;
-        false) printf "^c$green^^b$black^ $volume" ;; 
+        true) printf "^c$green^^b$black^" ;;
+        false) printf "^c$green^^b$black^ " && printf "^c$green^^b$black^ $volume" ;;
         esac
 }
 
