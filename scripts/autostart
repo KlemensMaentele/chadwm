@@ -5,7 +5,7 @@
 xrandr --output DP1 --auto --right-of LVDS1 &
 xbacklight -set 100 &
 pamixer -u &
-xmodmap ~/.Xmodmap
+xmodmap ~/.config/.Xmodmap
 #xrdb merge ~/.Xresources &
 feh --bg-fill ~/Pictures/wall/wall.png &
 xset r rate 200 50 &
