@@ -2,6 +2,7 @@
 
 # this is just an example!
 # add your autostart stuffs here
+redshift &
 xrandr --output DP1 --auto --right-of LVDS1 &
 xbacklight -set 100 &
 pamixer -u &
