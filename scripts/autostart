@@ -9,7 +9,7 @@ xbacklight -set 100 &
 pamixer -u &
 xmodmap ~/.config/.Xmodmap
 xrdb merge ~/.config/.Xresources &
-feh --bg-fill ~/Pictures/wall/wall.png &
+feh --bg-fill ~/Pictures/wallpaper/wall.png &
 xset r rate 200 50 &
 # run bar script and dwm ( do not remove this )
 bash ~/.config/chadwm/scripts/./bar.sh &
