@@ -28,8 +28,11 @@ static const int scalepreview       = 4;
 static const int tag_preview        = 0;        /* 1 means enable, 0 is off */
 static const int colorfultag        = 1;        /* 0 means use SchemeSel for selected non vacant tag */
 
-static const char *fonts[]          = { "JetBrainsMono Nerd Font:style:medium:size=10",
-                                        "Material Design Icons-Regular:size=10" };
+#define ICONSIZE 19   /* icon size */
+#define ICONSPACING 8 /* space between icon and title */
+
+static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font:style:medium:size=11",
+                                        "Material Design Icons Desktop:size=11" };
 
 // theme
 #include "themes/onedark.h"
@@ -38,6 +41,7 @@ static const char *colors[][3]      = {
     /*                     fg       bg      border */
     [SchemeNorm]       = { gray3,   black,  gray2 },
     [SchemeSel]        = { gray4,   blue,   blue  },
+    [SchemeTitle]      = { white,   black,  black  }, // active window title
     [TabSel]           = { blue,    gray2,  black },
     [TabNorm]          = { gray3,   black,  black },
     [SchemeTag]        = { gray3,   black,  black },
@@ -53,7 +57,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static char *tags[] = {"♛", "♚", "♜", "♝", "♞"};
+static char *tags[] = {"", "", "", "", ""};
 
 static const char* eww[] = { "eww", "open" , "eww", NULL };
 
@@ -108,6 +112,7 @@ static const Layout layouts[] = {
     { "|M|",      centeredmaster },
     { ">M>",      centeredfloatingmaster },
     { "><>",      NULL },    /* no layout function means floating behavior */
+    { NULL,       NULL },
 };
 
 /* key definitions */
@@ -138,6 +143,7 @@ static Key keys[] = {
     {0,             XF86XK_AudioRaiseVolume,        spawn,          {.v = rv}},
     {0,             XF86XK_AudioLowerVolume,        spawn,          {.v = dv}},
     {0,             XF86XK_AudioMute,               spawn,          {.v = mv}},
+
     {MODKEY|ControlMask,                XK_u,       spawn,
         SHCMD("maim | xclip -selection clipboard -t image/png")},
     {MODKEY,                            XK_u,       spawn,
@@ -148,16 +154,21 @@ static Key keys[] = {
     { MODKEY,                           XK_w,       spawn,          {.v = browser }},
     { MODKEY|ControlMask                XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank]]*us' && setxkbmap de || setxkbmap")},
     { MODKEY,                           XK_b,       togglebar,      {0} },
+
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
     { MODKEY,                           XK_i,       incnmaster,     {.i = +1 } },
     { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
+
+    // change m,cfact sizes 
     { MODKEY,                           XK_h,       setmfact,       {.f = -0.05} },
     { MODKEY,                           XK_l,       setmfact,       {.f = +0.05} },
     { MODKEY|ShiftMask,                 XK_h,       setcfact,       {.f = +0.25} },
     { MODKEY|ShiftMask,                 XK_l,       setcfact,       {.f = -0.25} },
     { MODKEY|ShiftMask,                 XK_o,       setcfact,       {.f =  0.00} },
+
+
     { MODKEY|ShiftMask,                 XK_j,       movestack,      {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_k,       movestack,      {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_Return,  zoom,           {0} },
@@ -175,6 +186,7 @@ static Key keys[] = {
     { MODKEY|ControlMask,               XK_o,       incrogaps,      {.i = +1 } },
     { MODKEY|ControlMask|ShiftMask,     XK_o,       incrogaps,      {.i = -1 } },
 
+    // inner+outer hori, vert gaps 
     { MODKEY|ControlMask,               XK_6,       incrihgaps,     {.i = +1 } },
     { MODKEY|ControlMask|ShiftMask,     XK_6,       incrihgaps,     {.i = -1 } },
     { MODKEY|ControlMask,               XK_7,       incrivgaps,     {.i = +1 } },
@@ -188,6 +200,8 @@ static Key keys[] = {
     { MODKEY|ControlMask|ShiftMask,     XK_d,       defaultgaps,    {0} },
 
     { MODKEY,                           XK_q,       killclient,     {0} },
+
+    // layout
     { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
     { MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
     { MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
@@ -204,12 +218,22 @@ static Key keys[] = {
     { MODKEY,                           XK_period,  focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_comma,   tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_period,  tagmon,         {.i = +1 } },
+
+    // change border size
     { MODKEY|ShiftMask,                 XK_minus,   setborderpx,    {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_p,       setborderpx,    {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
 
-    { MODKEY|ControlMask,               XK_q,       quit,           {0} },
-    { MODKEY|ShiftMask,                 XK_r,       quit,           {1} },
+    // kill dwm
+    { MODKEY|ControlMask,               XK_q,       spawn,        SHCMD("killall bar.sh dwm") },
+
+    // kill window
+    { MODKEY,                           XK_q,       killclient,     {0} },
+
+    // restart
+    { MODKEY|ShiftMask,                 XK_r,       restart,           {0} },
+
+    // hide & restore windows
     { MODKEY,                           XK_e,       hidewin,        {0} },
     { MODKEY|ShiftMask,                 XK_e,       restorewin,     {0} },
 
@@ -232,13 +256,14 @@ static Button buttons[] = {
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = term } },
+    { ClkStatusText,        0,              Button2,        spawn,          SHCMD("st") },
 
     /* Keep movemouse? */
     /* { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} }, */
 
     /* placemouse options, choose which feels more natural:
     *    0 - tiled position is relative to mouse cursor
-    *    1 - tiled postiion is relative to window center
+    *    1 - tiled position is relative to window center
     *    2 - mouse pointer warps to window center
     *
     * The moveorplace uses movemouse or placemouse depending on the floating state
