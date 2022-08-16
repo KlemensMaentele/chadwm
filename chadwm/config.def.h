@@ -31,7 +31,7 @@ static const int colorfultag        = 1;        /* 0 means use SchemeSel for sel
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font:style:medium:size=11",
+static const char *fonts[]          = {"JetBrainsMono Nerd Font:style:medium:size=11",
                                         "Material Design Icons Desktop:size=11" };
 
 // theme
@@ -57,7 +57,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static char *tags[] = {"", "", "", "", ""};
+static char *tags[] = {"","","","",""};
 
 static const char* eww[] = { "eww", "open" , "eww", NULL };
 
@@ -124,7 +124,7 @@ static const Layout layouts[] = {
     { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/zsh", "-c", cmd, NULL } }
 
 /* commands */
 static const char *term[]  = {  "st", NULL }; // change this to your term
@@ -152,7 +152,9 @@ static Key keys[] = {
     { MODKEY,                           XK_Return,  spawn,          {.v = term }},
     // { MODKEY,                       XK_Return, spawn,          SHCMD("st_pad && st")},
     { MODKEY,                           XK_w,       spawn,          {.v = browser }},
-    { MODKEY|ControlMask                XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank]]*us' && setxkbmap de || setxkbmap")},
+    { MODKEY|ControlMask,               XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank:]]*us' && setxkbmap de || setxkbmap us && xmodmap ~/.config/.Xmodmap")},
+    { MODKEY,                           XK_r,       spawn,          SHCMD("st -e ranger")},
+    { MODKEY,                           XK_m,       spawn,          SHCMD("st -e cmus")},
     { MODKEY,                           XK_b,       togglebar,      {0} },
 
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
@@ -167,7 +169,6 @@ static Key keys[] = {
     { MODKEY|ShiftMask,                 XK_h,       setcfact,       {.f = +0.25} },
     { MODKEY|ShiftMask,                 XK_l,       setcfact,       {.f = -0.25} },
     { MODKEY|ShiftMask,                 XK_o,       setcfact,       {.f =  0.00} },
-
 
     { MODKEY|ShiftMask,                 XK_j,       movestack,      {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_k,       movestack,      {.i = -1 } },
@@ -198,8 +199,6 @@ static Key keys[] = {
 
     { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
     { MODKEY|ControlMask|ShiftMask,     XK_d,       defaultgaps,    {0} },
-
-    { MODKEY,                           XK_q,       killclient,     {0} },
 
     // layout
     { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
@@ -256,7 +255,6 @@ static Button buttons[] = {
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = term } },
-    { ClkStatusText,        0,              Button2,        spawn,          SHCMD("st") },
 
     /* Keep movemouse? */
     /* { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} }, */
