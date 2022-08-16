@@ -28,11 +28,15 @@ static const int scalepreview       = 4;
 static const int tag_preview        = 0;        /* 1 means enable, 0 is off */
 static const int colorfultag        = 1;        /* 0 means use SchemeSel for selected non vacant tag */
 
+#define ICONSIZE 19   /* icon size */
+#define ICONSPACING 8 /* space between icon and title */
+
+
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style:medium:size=9",
                                         "Material Design Icons-Regular:size=10" };
 
 // theme
-#include "themes/gruvchad.h"
+#include "themes/onedark.h"
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
@@ -209,9 +213,10 @@ static Key keys[] = {
     { MODKEY|ShiftMask,                 XK_minus,   setborderpx,    {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_p,       setborderpx,    {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
-
-    { MODKEY|ControlMask,               XK_q,       quit,           {0} },
-    { MODKEY|ShiftMask,                 XK_r,       quit,           {1} },
+     // kill dwm
+    { MODKEY|ControlMask,               XK_q,       spawn,        SHCMD("killall bar.sh dwm") },
+    // restart
+    { MODKEY|ShiftMask,                 XK_r,       restart,           {0} },
     { MODKEY,                           XK_e,       hidewin,        {0} },
     { MODKEY|ShiftMask,                 XK_e,       restorewin,     {0} },
 
