@@ -71,27 +71,11 @@ kblayout(){
         printf "^c$white^^b$black^ $(setxkbmap -query | awk '/layout/{ print $2 }')"
 }
 
-music(){
-        status="$(cmus-remote -Q 2>&1)"
-        if [[ $status == "cmus-remote: cmus is not running" ]]; then 
-          return 
-        fi
-        stat="$(cmus-remote -Q | awk '/status/ { print $2 }')"
-        if [[ $stat == "stopped" ]]; then
-          return
-        fi
-
-        artist="$(cmus-remote -Q | awk '/tag artist/ { print $3, $4, $5, $6, $7, $8}' | xargs)"
-        song="$(cmus-remote -Q | awk '/tag title/ { print $3, $4, $5, $6, $7, $8, $9, $10}' | xargs)"
-        duration="$(cmus-remote -Q | awk '/duration/ { print $2 }' | xargs)"
-        position="$(cmus-remote -Q | awk '/position/ { print $2 }' | xargs)"
-	printf "^c$black^^b$red^ $artist : $song $position/$duration"
-}
 
 while true; do
 
 	[ $interval = 0 ] || [ $(($interval % 3600)) = 0 ]
 	interval=$((interval + 1))
 
-        sleep 1 && xsetroot -name "$(music) $(kblayout) $(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
+        sleep 1 && xsetroot -name "$(kblayout) $(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
 done
