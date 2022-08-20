@@ -77,5 +77,5 @@ while true; do
 	[ $interval = 0 ] || [ $(($interval % 3600)) = 0 ]
 	interval=$((interval + 1))
 
-        sleep 1 && xsetroot -name "$(kblayout) $(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
+        sleep 1 && xsetroot -name " $(kblayout) $(volume) $(battery) $(brightness) $(cpu) $(mem) $(wlan) $(clock)"
 done
