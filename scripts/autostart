@@ -12,5 +12,5 @@ xrdb merge ~/.config/.Xresources &
 feh --bg-fill ~/Pictures/wallpaper/wall.png &
 xset r rate 200 50 &
 # run bar script and dwm ( do not remove this )
-bash ~/.config/chadwm/scripts/./bar-desktop.sh &  # swap out bar-desktop.sh with bar-laptop.sh when using a laptop for brightness and battery icons
+bash ~/devel/scripts/bar-desktop.sh &  # swap out bar-desktop.sh with bar-laptop.sh when using a laptop for brightness and battery icons
 dwm
