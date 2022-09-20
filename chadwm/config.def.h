@@ -129,8 +129,8 @@ static const Layout layouts[] = {
 /* commands */
 static const char *term[]  = {  "st", NULL }; // change this to your term
 static const char *rofi[] = {"rofi", "-show",  "drun", NULL};
-static const char *xi[] = {"xbacklight", "-inc", "10", NULL};
-static const char *xd[] = {"xbacklight", "-dec", "10", NULL};
+static const char *xi[] = {"xbacklight", "-inc", "2", NULL};
+static const char *xd[] = {"xbacklight", "-dec", "2", NULL};
 static const char *rv[] = {"pamixer",    "-i",   "5",  NULL};
 static const char *dv[] = {"pamixer",    "-d",   "5",  NULL};
 static const char *mv[] = {"pamixer",    "-m",         NULL};
