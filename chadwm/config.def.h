@@ -129,8 +129,8 @@ static const Layout layouts[] = {
 /* commands */
 static const char *term[]  = {  "st", NULL }; // change this to your term
 static const char *rofi[] = {"rofi", "-show",  "drun", NULL};
-static const char *xi[] = {"xbacklight", "-inc", "2", NULL};
-static const char *xd[] = {"xbacklight", "-dec", "2", NULL};
+static const char *xi[] = {"xbacklight", "-inc", "5", NULL};
+static const char *xd[] = {"xbacklight", "-dec", "5", NULL};
 static const char *rv[] = {"pamixer",    "-i",   "5",  NULL};
 static const char *dv[] = {"pamixer",    "-d",   "5",  NULL};
 static const char *mv[] = {"pamixer",    "-m",         NULL};
@@ -153,7 +153,7 @@ static Key keys[] = {
     // { MODKEY,                       XK_Return, spawn,          SHCMD("st_pad && st")},
     { MODKEY,                           XK_w,       spawn,          {.v = browser }},
     { MODKEY|ControlMask,               XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank:]]*us' && setxkbmap de || setxkbmap us && xmodmap ~/.config/.Xmodmap")},
-    { MODKEY,                           XK_r,       spawn,          SHCMD("st -e ranger")},
+    { MODKEY,                           XK_r,       spawn,          SHCMD("st -e zsh -c /home/klemens/devel/scripts/lfub")},
     { MODKEY,                           XK_m,       spawn,          SHCMD("audacious")},
     { MODKEY,                           XK_b,       togglebar,      {0} },
 
