@@ -133,7 +133,7 @@ static const char *xi[] = {"xbacklight", "-inc", "5", NULL};
 static const char *xd[] = {"xbacklight", "-dec", "5", NULL};
 static const char *rv[] = {"pamixer",    "-i",   "5",  NULL};
 static const char *dv[] = {"pamixer",    "-d",   "5",  NULL};
-static const char *mv[] = {"pamixer",    "-m",         NULL};
+static const char *mv[] = {"pamixer",    "-t",         NULL};
 static const char *browser[] = {"brave", NULL}; 
 
 static Key keys[] = {
@@ -156,7 +156,6 @@ static Key keys[] = {
     { MODKEY,                           XK_r,       spawn,          SHCMD("st -e zsh -c /home/klemens/devel/scripts/lfub")},
     { MODKEY,                           XK_m,       spawn,          SHCMD("audacious")},
     { MODKEY,                           XK_b,       togglebar,      {0} },
-
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
