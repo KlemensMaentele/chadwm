@@ -129,8 +129,8 @@ static const Layout layouts[] = {
 /* commands */
 static const char *term[]  = {  "st", NULL }; // change this to your term
 static const char *rofi[] = {"rofi", "-show",  "drun", NULL};
-static const char *xi[] = {"xbacklight", "-inc", "5", NULL};
-static const char *xd[] = {"xbacklight", "-dec", "5", NULL};
+static const char *xi[] = {"brightnessctl", "set", "+5%", NULL};
+static const char *xd[] = {"brightnessctl", "set", "5%-", NULL};
 static const char *rv[] = {"pamixer",    "-i",   "5",  NULL};
 static const char *dv[] = {"pamixer",    "-d",   "5",  NULL};
 static const char *mv[] = {"pamixer",    "-t",         NULL};
@@ -139,15 +139,13 @@ static const char *browser[] = {"brave", NULL};
 static Key keys[] = {
     /* modifier                         key         function        argument */
     {0,             XF86XK_MonBrightnessDown,       spawn,          {.v = xd}},
-    {0,               XF86XK_MonBrightnessUp,       spawn,          {.v = xi}},
+    {0,             XF86XK_MonBrightnessUp,         spawn,          {.v = xi}},
     {0,             XF86XK_AudioRaiseVolume,        spawn,          {.v = rv}},
     {0,             XF86XK_AudioLowerVolume,        spawn,          {.v = dv}},
     {0,             XF86XK_AudioMute,               spawn,          {.v = mv}},
 
-    {MODKEY|ControlMask,                XK_u,       spawn,
-        SHCMD("maim | xclip -selection clipboard -t image/png")},
-    {MODKEY,                            XK_u,       spawn,
-        SHCMD("maim --select | xclip -selection clipboard -t image/png")},
+    {MODKEY,                            XK_s,       spawn,
+        SHCMD("scrot Pictures/Screenshots/'%Y-%m-%d-%X.png'")},
     { MODKEY,                           XK_c,       spawn,          {.v = rofi }},
     { MODKEY,                           XK_Return,  spawn,          {.v = term }},
     // { MODKEY,                       XK_Return, spawn,          SHCMD("st_pad && st")},
