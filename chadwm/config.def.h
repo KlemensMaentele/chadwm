@@ -153,6 +153,7 @@ static Key keys[] = {
     { MODKEY|ControlMask,               XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank:]]*us' && setxkbmap de || setxkbmap us && xmodmap ~/.config/.Xmodmap")},
     { MODKEY,                           XK_r,       spawn,          SHCMD("st -e zsh -c /home/klemens/devel/scripts/lfub")},
     { MODKEY,                           XK_m,       spawn,          SHCMD("audacious")},
+    { MODKEY,                           XK_p,       spawn,          SHCMD("st -e pulsemixer")},
     { MODKEY,                           XK_b,       togglebar,      {0} },
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
