@@ -150,7 +150,7 @@ static Key keys[] = {
     { MODKEY,                           XK_Return,  spawn,          {.v = term }},
     // { MODKEY,                       XK_Return, spawn,          SHCMD("st_pad && st")},
     { MODKEY,                           XK_w,       spawn,          {.v = browser }},
-    { MODKEY|ControlMask,               XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank:]]*us' && setxkbmap de || setxkbmap us && xmodmap ~/.config/.Xmodmap")},
+    { MODKEY|ControlMask,               XK_space,   spawn,          SHCMD("/usr/bin/setxkbmap -query | grep 'layout:[[:blank:]]*us' && setxkbmap de || setxkbmap us")},
     { MODKEY,                           XK_r,       spawn,          SHCMD("st -e zsh -c /home/klemens/devel/scripts/lfub")},
     { MODKEY,                           XK_m,       spawn,          SHCMD("audacious")},
     { MODKEY,                           XK_p,       spawn,          SHCMD("st -e pulsemixer")},
