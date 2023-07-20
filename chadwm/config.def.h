@@ -18,10 +18,11 @@ static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int showtab            = showtab_auto;
 static const int toptab             = 1;        /* 0 means bottom tab */
+static const int floatbar           = 1;/* 1 means the bar will float(don't have padding),0 means the bar have padding */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 5;
 static const int vertpadbar         = 11;
-static const int vertpadtab         = 33;
+static const int vertpadtab         = 35;
 static const int horizpadtabi       = 15;
 static const int horizpadtabo       = 15;
 static const int scalepreview       = 4;
@@ -33,7 +34,6 @@ static const int colorfultag        = 1;        /* 0 means use SchemeSel for sel
 
 static const char *fonts[]          = {"JetBrainsMono Nerd Font:style:medium:size=10",
                                         "Material Design Icons Desktop:size=9" };
-
 // theme
 #include "themes/onedark.h"
 
@@ -63,7 +63,7 @@ static const char* eww[] = { "eww", "open" , "eww", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
-    { eww,         "" },
+    { eww,         "" },
 };
 
 static const int tagschemes[] = {
@@ -131,21 +131,24 @@ static const char *term[]  = {  "st", NULL }; // change this to your term
 static const char *rofi[] = {"rofi", "-show",  "drun", NULL};
 static const char *xi[] = {"brightnessctl", "set", "+5%", NULL};
 static const char *xd[] = {"brightnessctl", "set", "5%-", NULL};
-static const char *rv[] = {"pamixer",    "-i",   "5",  NULL};
-static const char *dv[] = {"pamixer",    "-d",   "5",  NULL};
-static const char *mv[] = {"pamixer",    "-t",         NULL};
 static const char *browser[] = {"brave", NULL}; 
+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
+static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
+static const int new_window_attach_on_end = 0; /*  1 means the new window will attach on the end; 0 means the new window will attach on the front,default is front */
+
 
 static Key keys[] = {
+    // brightness and audio
     /* modifier                         key         function        argument */
     {0,             XF86XK_MonBrightnessDown,       spawn,          {.v = xd}},
     {0,             XF86XK_MonBrightnessUp,         spawn,          {.v = xi}},
-    {0,             XF86XK_AudioRaiseVolume,        spawn,          {.v = rv}},
-    {0,             XF86XK_AudioLowerVolume,        spawn,          {.v = dv}},
-    {0,             XF86XK_AudioMute,               spawn,          {.v = mv}},
+    {0,             XF86XK_AudioRaiseVolume,        spawn,          {.v = upvol}},
+    {0,             XF86XK_AudioLowerVolume,        spawn,          {.v = downvol}},
+    {0,             XF86XK_AudioMute,               spawn,          {.v = mutevol}},
 
-    {MODKEY,                            XK_s,       spawn,
-        SHCMD("scrot Pictures/Screenshots/'%Y-%m-%d-%X.png'")},
+    // screenshot fullscreen and programs
+    {MODKEY,                            XK_s,       spawn,          SHCMD("scrot Pictures/Screenshots/'%Y-%m-%d-%X.png'")},
     { MODKEY,                           XK_c,       spawn,          {.v = rofi }},
     { MODKEY,                           XK_Return,  spawn,          {.v = term }},
     // { MODKEY,                       XK_Return, spawn,          SHCMD("st_pad && st")},
@@ -154,12 +157,22 @@ static Key keys[] = {
     { MODKEY,                           XK_r,       spawn,          SHCMD("st -e zsh -c /home/klemens/devel/scripts/lfub")},
     { MODKEY,                           XK_m,       spawn,          SHCMD("audacious")},
     { MODKEY,                           XK_p,       spawn,          SHCMD("st -e pulsemixer")},
+
+    // toggle stuff
     { MODKEY,                           XK_b,       togglebar,      {0} },
+    { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
+    { MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
+    { MODKEY,                           XK_f,       togglefullscr,  {0} },
+
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
     { MODKEY,                           XK_i,       incnmaster,     {.i = +1 } },
     { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
+
+    // shift view
+    { MODKEY,                           XK_Left,    shiftview,      {.i = -1 } },
+    { MODKEY,                           XK_Right,   shiftview,      {.i = +1 } },
 
     // change m,cfact sizes 
     { MODKEY,                           XK_h,       setmfact,       {.f = -0.05} },
@@ -195,7 +208,6 @@ static Key keys[] = {
     { MODKEY|ControlMask,               XK_9,       incrovgaps,     {.i = +1 } },
     { MODKEY|ControlMask|ShiftMask,     XK_9,       incrovgaps,     {.i = -1 } },
 
-    { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
     { MODKEY|ControlMask|ShiftMask,     XK_d,       defaultgaps,    {0} },
 
     // layout
@@ -207,8 +219,6 @@ static Key keys[] = {
     { MODKEY,                           XK_space,   setlayout,      {0} },
     { MODKEY|ControlMask,               XK_comma,   cyclelayout,    {.i = -1 } },
     { MODKEY|ControlMask,               XK_period,  cyclelayout,    {.i = +1 } },
-    { MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
-    { MODKEY,                           XK_f,       togglefullscr,  {0} },
     { MODKEY,                           XK_0,       view,           {.ui = ~0 } },
     { MODKEY|ShiftMask,                 XK_0,       tag,            {.ui = ~0 } },
     { MODKEY,                           XK_comma,   focusmon,       {.i = -1 } },
@@ -247,7 +257,7 @@ static Key keys[] = {
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static Button buttons[] = {
+static const Button buttons[] = {
     /* click                event mask      button          function        argument */
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
