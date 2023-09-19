@@ -41,6 +41,7 @@ cd ~/.config/chadwm/
 cd chadwm
 sudo make install
 ```
+(Note: chmod +x all of the scripts)
 
 # Run chadwm
 
